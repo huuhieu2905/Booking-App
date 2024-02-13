@@ -24,8 +24,8 @@ app.use(cors({
     credentials: true,
     origin: [
         "http://localhost:5173",
-        "https://hieutt210354.web.app/",
-        "http://hieutt210354.web.app/"
+        "https://hieutt210354.web.app",
+        "http://hieutt210354.web.app"
     ]
 }));
 
