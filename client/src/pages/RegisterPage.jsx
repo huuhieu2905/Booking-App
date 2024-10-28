@@ -6,6 +6,7 @@ export default function RegisterPage(){
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    
     async function registerUser(ev){
         ev.preventDefault();
         try {
@@ -14,6 +15,7 @@ export default function RegisterPage(){
                 email,
                 password,
             });
+            console.log(email, password);
             alert('Registration successful. Now you can log in');
         } catch (e){
             alert('Registration failed. Please try again later');
