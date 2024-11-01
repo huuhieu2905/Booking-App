@@ -56,7 +56,7 @@ app.post('/login', async (req, res) => {
             res.status(422).json('pass not ok');
         }
     } else{
-        res.json('not found');
+        res.json('not found');//fix loi o day
     }
 });
 
@@ -73,6 +73,10 @@ app.get('/profile', (req, res) => {
         res.json(null);
     }
   
+});
+
+app.post('/logout', (req, res) => {
+    res.cookie('token', '').json(true);
 });
 
 app.listen(4000);
