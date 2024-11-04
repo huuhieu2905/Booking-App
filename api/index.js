@@ -56,7 +56,7 @@ app.post('/login', async (req, res) => {
             res.status(422).json('pass not ok');
         }
     } else{
-        res.json('not found');//fix loi o day
+        res.status(400).json('not found');//fix loi o day
     }
 });
 
