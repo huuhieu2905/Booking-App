@@ -4,17 +4,17 @@ import { Link, Navigate, useParams } from "react-router-dom";
 import axios from "axios";
 import PlacesPage from "./PlacesPage";
 
-export default function AccountPage(){
+export default function AccountPage() {
     const [redirect, setRedirect] = useState(null);
-    const {ready, user, setUser} = useContext(UserContext);
+    const { ready, user, setUser } = useContext(UserContext);
 
-    let {subpage} = useParams();
+    let { subpage } = useParams();
 
-    if (subpage === undefined){
+    if (subpage === undefined) {
         subpage = 'profile';
     }
 
-    async function logout(){
+    async function logout() {
         await axios.post('/logout');
         setRedirect("/");
         setUser(null);
@@ -24,19 +24,19 @@ export default function AccountPage(){
         return 'Loading...';
     }
 
-    if (ready && !user && !redirect){
+    if (ready && !user && !redirect) {
         return <Navigate to={'/login'} />
     }
 
-    function linkClasses (type=null){
+    function linkClasses(type = null) {
         let classes = 'py-2 px-6';
-        if (type === subpage){
+        if (type === subpage) {
             classes += '  bg-primary text-white rounded-full '
         }
         return classes
     }
 
-    if (redirect){
+    if (redirect) {
         return <Navigate to={redirect} />
     }
 
