@@ -7,7 +7,7 @@ const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
 require('dotenv').config();
 const app = express();
-
+const multer = require('multer');
 const bcryptSalt = bcrypt.genSaltSync(10);
 const jwtSecret = 'hieu292929';
 
