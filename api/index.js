@@ -5,6 +5,7 @@ const bcrypt = require('bcryptjs');
 const User = require('./models/User.js');
 const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
+const imageDownloader = require('image-downloader');
 require('dotenv').config();
 const app = express();
 
@@ -13,7 +14,7 @@ const jwtSecret = 'hieu292929';
 
 app.use(express.json());
 app.use(cookieParser());
-
+app.use('/uploads', express.static(__dirname + '/uploads'))
 app.use(cors({
     credentials: true,
     origin: 'http://localhost:5173',
@@ -61,7 +62,6 @@ app.post('/login', async (req, res) => {
     }
 });
 
-
 app.get('/profile', (req, res) => {
     const { token } = req.cookies;
     if (token) {
@@ -78,6 +78,26 @@ app.get('/profile', (req, res) => {
 
 app.post('/logout', (req, res) => {
     res.cookie('token', '').json(true);
+});
+
+
+app.post('/upload-by-link', async (req, res) => {
+    const { link } = req.body;
+    if (!link) {
+        return res.status(400).json({ error: 'A valid link is required' });
+    }
+
+    try {
+        const newName = 'photo' + Date.now() + '.jpg';
+        await imageDownloader.image({
+            url: link,
+            dest: __dirname + '/uploads/' + newName,
+        });
+        res.json(newName);
+    } catch (error) {
+        console.error('Error downloading image:', error);
+        res.status(500).json({ error: 'Failed to download image' });
+    }
 });
 
 app.listen(4000);
