@@ -1,16 +1,15 @@
+import { Route, Routes } from 'react-router-dom';
 import './App.css'
-import {Route, Routes} from "react-router-dom";
-import IndexPage from "./pages/IndexPage.jsx";
-import LoginPage from "./pages/LoginPage";
-import Layout from "./Layout";
-import RegisterPage from "./pages/RegisterPage";
-import axios from "axios";
-import {UserContextProvider} from "./UserContext";
-import PlacesPage from "./pages/PlacesPage";
-import PlacesFormPage from "./pages/PlacesFormPage";
-import PlacePage from "./pages/PlacePage";
+import IndexPage from "./pages/IndexPage.jsx"
+import LoginPage from './pages/LoginPage.jsx';
+import Layout from './Layout.jsx';
+import RegisterPage from './pages/RegisterPage.jsx';
+import axios from 'axios';
+import { UserContextProvider } from './UserContext.jsx';
+import { useEffect } from 'react';
+import AccountPage from './pages/AccountPage.jsx';
 
-axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
+axios.defaults.baseURL = 'http://localhost:4000'
 axios.defaults.withCredentials = true;
 
 function App() {
@@ -21,14 +20,12 @@ function App() {
           <Route index element={<IndexPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
-          <Route path="/account/places" element={<PlacesPage />} />
-          <Route path="/account/places/new" element={<PlacesFormPage />} />
-          <Route path="/account/places/:id" element={<PlacesFormPage />} />
-          <Route path="/place/:id" element={<PlacePage />} />
+          <Route path="/account/:subpage?" element={<AccountPage />} />
+          <Route path="/account/:subpage/:action" element={<AccountPage />} />
         </Route>
       </Routes>
     </UserContextProvider>
-  )
+  );
 }
 
 export default App

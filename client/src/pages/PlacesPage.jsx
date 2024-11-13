@@ -1,39 +1,45 @@
-import {Link, useParams} from "react-router-dom";
-import AccountNav from "../AccountNav";
-import {useEffect, useState} from "react";
-import axios from "axios";
-import PlaceImg from "../PlaceImg";
+import { Link, useParams } from 'react-router-dom';
+
 export default function PlacesPage() {
-  const [places,setPlaces] = useState([]);
-  useEffect(() => {
-    axios.get('/user-places').then(({data}) => {
-      setPlaces(data);
-    });
-  }, []);
-  return (
-    <div>
-      <AccountNav />
-        <div className="text-center">
-          <Link className="inline-flex gap-1 bg-primary text-white py-2 px-6 rounded-full" to={'/account/places/new'}>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
-              <path fillRule="evenodd" d="M12 3.75a.75.75 0 01.75.75v6.75h6.75a.75.75 0 010 1.5h-6.75v6.75a.75.75 0 01-1.5 0v-6.75H4.5a.75.75 0 010-1.5h6.75V4.5a.75.75 0 01.75-.75z" clipRule="evenodd" />
-            </svg>
-            Add new place
-          </Link>
+    const { action } = useParams();
+
+    return (
+        <div>
+            {action !== 'new' && (
+                <div className="text-center">
+                    <Link className="inline-flex gap-1 bg-primary text-white py-2 px-6 rounded-full" to={'/account/places/new'}>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="size-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                        </svg>
+                        Add new place
+                    </Link>
+                </div>
+            )}
+
+            {action === 'new' && (
+                <div>
+                    <form action="">
+                        <h2 className='text-2xl mt-4'>Title</h2>
+                        <input type="text" placeholder='title, ex: My lovely apt' />
+                        <h2 className='text-2xl mt-4'>Address</h2>
+                        <input type="text" placeholder='address' />
+                        <h2 className='text-2xl mt-4'>Photos</h2>
+                        <div className='flex gap-2'>
+                            <input type="text" placeholder='Add using a link ......jpg' />
+                            <button className='bg-gray-200 px-4 rounded-2xl'>Add&nbsp;photos</button>
+                        </div>
+                        <div className='mt-2 grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6'>
+                            <button className='flex gap-1 justify-center border bg-transparent rounded-2xl p-8 text-2xl text-gray-600'>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-8">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 16.5V9.75m0 0 3 3m-3-3-3 3M6.75 19.5a4.5 4.5 0 0 1-1.41-8.775 5.25 5.25 0 0 1 10.233-2.33 3 3 0 0 1 3.758 3.848A3.752 3.752 0 0 1 18 19.5H6.75Z" />
+                                </svg>
+                                Upload
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            )}
+            My Places......
         </div>
-        <div className="mt-4">
-          {places.length > 0 && places.map(place => (
-            <Link to={'/account/places/'+place._id} className="flex cursor-pointer gap-4 bg-gray-100 p-4 rounded-2xl">
-              <div className="flex w-32 h-32 bg-gray-300 grow shrink-0">
-                <PlaceImg place={place} />
-              </div>
-              <div className="grow-0 shrink">
-                <h2 className="text-xl">{place.title}</h2>
-                <p className="text-sm mt-2">{place.description}</p>
-              </div>
-            </Link>
-          ))}
-        </div>
-    </div>
-  );
+    );
 }
