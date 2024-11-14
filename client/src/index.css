@@ -6,9 +6,9 @@ input[type="text"],input[type="password"], input[type="email"] {
     @apply w-full border my-1 py-2 px-3 rounded-2xl;
 }
 button{
-    @apply bg-gray-300;
+    @apply bg-gray-200;
 }
 button.primary{
-    background-color: #F5385D;
+    background-color: #f5385ea6;
     @apply bg-primary p-2 w-full text-white rounded-2xl;
 }
