@@ -1,26 +1,39 @@
 import { useState } from "react";
 import axios from 'axios';
-export default function PhotosUploader({addedPhotos, onChange}) {
+export default function PhotosUploader({ addedPhotos, onChange }) {
     const [photoLink, setPhotoLink] = useState('');
     async function addPhotoByLink(ev) {
         ev.preventDefault();
-        const { data: filename } = await axios.post('/upload-by-link', { link: photoLink });
-        onChange(prev => {
-            return [...prev, filename];
-        });
+        // Kiểm tra định dạng URL
+        const urlRegex = /(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|jpeg|png|gif)$/i;
+        if (!urlRegex.test(photoLink)) {
+            alert("Link không đúng định dạng! Vui lòng nhập lại một link hợp lệ.");
+            return;
+        }
+
+        try {
+            const { data: filename } = await axios.post('/upload-by-link', { link: photoLink });
+            onChange(prev => {
+                return [...prev, filename];
+            });
+            setPhotoLink(''); // Reset lại input sau khi thêm thành công
+        } catch (error) {
+            console.error("Lỗi khi thêm ảnh:", error);
+            alert("Có lỗi xảy ra. Vui lòng thử lại sau.");
+        }
     }
 
     function uploadPhoto(ev) {
         const files = ev.target.files;
-        console.log({files});
+        console.log({ files });
         const data = new FormData();
-        for(let i = 0; i < files.length; i++){
+        for (let i = 0; i < files.length; i++) {
             data.append('photos', files[i]);
         }
         axios.post('/upload', data, {
-            headers: {'Content-Type': 'multipart/form-data'}
+            headers: { 'Content-Type': 'multipart/form-data' }
         }).then(response => {
-            const {data: filenames} = response;
+            const { data: filenames } = response;
             onChange(prev => {
                 return [...prev, ...filenames];
             });
