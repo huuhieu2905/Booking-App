@@ -7,7 +7,13 @@ import RegisterPage from './pages/RegisterPage.jsx';
 import axios from 'axios';
 import { UserContextProvider } from './UserContext.jsx';
 import { useEffect } from 'react';
-import AccountPage from './pages/AccountPage.jsx';
+import ProfilePage from './pages/ProfilePage.jsx';
+import PlacesPage from './pages/PlacesPage.jsx';
+import PlacesFormPage from './pages/PlacesFormPage.jsx';
+import PlacePage from './pages/PlacePage.jsx';
+import BookingsPage from './pages/BookingsPage.jsx';
+import BookingPage from './pages/BookingPage.jsx';
+import CloudinaryTest from './CloudinaryTest.jsx';
 
 axios.defaults.baseURL = 'http://localhost:4000'
 axios.defaults.withCredentials = true;
@@ -20,10 +26,14 @@ function App() {
           <Route index element={<IndexPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
-          <Route path="/account/:subpage?" element={<AccountPage/>} />
-          <Route path="/place/:id" element={<PlacePage />} />
-          <Route path="/account/bookings" element={<BookingsPage />} />
-          <Route path="/account/bookings/:id" element={<BookingPage />} />
+          <Route path="/account/" element={<ProfilePage/>} />
+          <Route path="/account/places" element={<PlacesPage/>} />
+          <Route path="/account/places/new" element={<PlacesFormPage/>} />
+          <Route path="/account/places/:id" element={<PlacesFormPage/>} />
+          <Route path="/account/bookings" element={<BookingsPage/>}/>
+          <Route path="/account/bookings/:id" element={<BookingPage/>}/>
+          <Route path="/place/:id" element={<PlacePage/>}/>
+          <Route path="/Cloud" element={<CloudinaryTest/>}/>
         </Route>
       </Routes>
     </UserContextProvider>
@@ -31,114 +41,3 @@ function App() {
 }
 
 export default App
-
-
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import App from './App.jsx'
-import './index.css'
-import { BrowserRouter } from 'react-router-dom'
-
-createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  
-  </StrictMode>,
-)
-
-
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import App from './App.jsx'
-import './index.css'
-import { BrowserRouter } from 'react-router-dom'
-
-
-createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  
-  </StrictMode>,
-)
-createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  
-  </StrictMode>,
-)
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import App from './App.jsx'
-import './index.css'
-import { BrowserRouter } from 'react-router-dom'
-
-createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  
-  </StrictMode>,
-)
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import App from './App.jsx'
-import './index.css'
-import { BrowserRouter } from 'react-router-dom'
-
-createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  
-  </StrictMode>,
-)
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import App from './App.jsx'
-import './index.css'
-import { BrowserRouter } from 'react-router-dom'
-
-createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  
-  </StrictMode>,
-)
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import App from './App.jsx'
-import './index.css'
-import { BrowserRouter } from 'react-router-dom'
-
-createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  
-  </StrictMode>,
-)
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import App from './App.jsx'
-import './index.css'
-import { BrowserRouter } from 'react-router-dom'
-
-createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  
-  </StrictMode>,
-)
