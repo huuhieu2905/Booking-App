@@ -13,14 +13,25 @@ export default function PlacesFormPage() {
     const [description, setDescription] = useState('');
     const [extraInfo, setExtraInfo] = useState('');
     const [checkIn, setCheckIn] = useState('');
-    const [checkout, setCheckOut] = useState('');
-    const [maxGuest, setMaxGuest] = useState(1);
+    const [checkOut, setCheckOut] = useState('');
+    const [maxGuests, setMaxGuests] = useState(1);
     const [redirect, setRedirect] = useState(false);
 
     useEffect(() => {
         if (!id) return;
 
-        axios.get('/places/' + id);
+        axios.get('/places/' + id).then(res => {
+            const { data } = res;
+            setTitle(data.title);
+            setAddress(data.address);
+            setAddedPhotos(data.photos);
+            setDescription(data.description);
+            setPerks(data.perks);
+            setExtraInfo(data.extraInfo);
+            setCheckIn(data.checkIn);
+            setCheckOut(data.checkOut);
+            setMaxGuests(data.maxGuests);
+        });
     }, [id]);
 
     function inputHeader(text) {
@@ -42,14 +53,24 @@ export default function PlacesFormPage() {
         );
     }
 
-    async function addNewPlace(ev) {
+    async function savePlace(ev) {
         ev.preventDefault();
-        await axios.post('/places', {
-            title, address, addedPhotos,
-            description, perks, extraInfo,
-            checkIn, checkout, maxGuest
-        });
-        setRedirect(true);
+        if (id) {
+            await axios.put('/places', {
+                id, title, address, addedPhotos,
+                description, perks, extraInfo,
+                checkIn, checkOut, maxGuests
+            });
+            setRedirect(true);
+        }
+        else {
+            await axios.post('/places', {
+                title, address, addedPhotos,
+                description, perks, extraInfo,
+                checkIn, checkOut, maxGuests
+            });
+            setRedirect(true);
+        }
     }
 
     if (redirect) {
@@ -59,7 +80,7 @@ export default function PlacesFormPage() {
     return (
         <div>
             <AccountNav />
-            <form onSubmit={addNewPlace}>
+            <form onSubmit={savePlace}>
                 {preInput('Title', 'Title for your place. Should be short and catchy ad in advertisement')}
                 <input type="text" value={title} onChange={ev => setTitle(ev.target.value)} placeholder="title" />
                 {preInput('Address', 'Address to this place')}
@@ -88,12 +109,12 @@ export default function PlacesFormPage() {
                     </div>
                     <div>
                         <h3 className="mt-2 -mb-1">Check out time</h3>
-                        <input type="text" value={checkout} onChange={ev => setCheckOut(ev.target.value)}
+                        <input type="text" value={checkOut} onChange={ev => setCheckOut(ev.target.value)}
                             placeholder="11" />
                     </div>
                     <div>
                         <h3 className="mt-2 -mb-1">Max number of guests</h3>
-                        <input type="number" value={maxGuest} onChange={ev => setMaxGuest(ev.target.value)} />
+                        <input type="number" value={maxGuests} onChange={ev => setMaxGuests(ev.target.value)} />
                     </div>
                 </div>
                 <button className="primary my-4">Save</button>
