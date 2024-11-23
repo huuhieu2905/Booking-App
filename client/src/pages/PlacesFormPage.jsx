@@ -1,8 +1,11 @@
 import PhotosUploader from "../PhotosUploader";
 import Perks from "../Perks";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
+import AccountNav from "../AccountNav";
+import { Navigate, useParams } from "react-router-dom";
 export default function PlacesFormPage() {
+    const { id } = useParams();
     const [title, setTitle] = useState('');
     const [address, setAddress] = useState('');
     const [addedPhotos, setAddedPhotos] = useState([]);
@@ -12,6 +15,13 @@ export default function PlacesFormPage() {
     const [checkIn, setCheckIn] = useState('');
     const [checkout, setCheckOut] = useState('');
     const [maxGuest, setMaxGuest] = useState(1);
+    const [redirect, setRedirect] = useState(false);
+
+    useEffect(() => {
+        if (!id) return;
+
+        axios.get('/places/' + id);
+    }, [id]);
 
     function inputHeader(text) {
         return (
@@ -39,10 +49,16 @@ export default function PlacesFormPage() {
             description, perks, extraInfo,
             checkIn, checkout, maxGuest
         });
+        setRedirect(true);
+    }
+
+    if (redirect) {
+        return <Navigate to={'/account/places'} />
     }
 
     return (
         <div>
+            <AccountNav />
             <form onSubmit={addNewPlace}>
                 {preInput('Title', 'Title for your place. Should be short and catchy ad in advertisement')}
                 <input type="text" value={title} onChange={ev => setTitle(ev.target.value)} placeholder="title" />
