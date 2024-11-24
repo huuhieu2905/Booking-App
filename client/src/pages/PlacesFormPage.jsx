@@ -98,7 +98,7 @@ export default function PlacesFormPage() {
                 <div className="grid mt-2 grid-cols-2 md:grid-cols-4 lg:grid-cols-6">
                     <Perks selected={perks} onChange={setPerks} />
                 </div>
-                <h2 className="text-2xl mt-4">Extra info</h2>F
+                <h2 className="text-2xl mt-4">Extra info</h2>
                 <p className="text-gray-500 text-sm">house rules, etc</p>
                 <textarea value={extraInfo} onChange={ev => setExtraInfo(ev.target.value)} />
                 <h2 className="text-2xl mt-4">Check in&out times, max guests</h2>
