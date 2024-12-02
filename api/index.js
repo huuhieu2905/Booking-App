@@ -22,7 +22,10 @@ app.use(cookieParser());
 app.use('/uploads', express.static(__dirname + '/uploads'));
 app.use(cors({
     credentials: true,
-    origin: "http://localhost:5173",
+    origin: [
+        "http://localhost:5173",
+        "https://hieutt210354.web.app"
+    ]
 }));
 
 mongoose.connect(process.env.MONGO_URL);
@@ -58,6 +61,7 @@ app.post('/register', async (req, res) => {
 app.post('/login', async (req, res) => {
     const {email, password} = req.body;
     const userDoc = await User.findOne({email});
+    console.log(email);
     if (userDoc){
         const passOk = bcrypt.compareSync(password, userDoc.password);
         if (passOk) {
@@ -71,7 +75,7 @@ app.post('/login', async (req, res) => {
             res.status(422).json('pass not ok');
         }
     } else{
-        res.status(200).json('not found'); //Fix loi dang nhap
+        res.status(422).json('not found'); //Fix loi dang nhap
     }
 });
 
