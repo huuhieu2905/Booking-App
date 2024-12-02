@@ -22,12 +22,9 @@ app.use(cookieParser());
 app.use('/uploads', express.static(__dirname + '/uploads'));
 app.use(cors({
     credentials: true,
-    origin: [
-        "http://localhost:5173",
-        "https://hieutt210354.web.app"
-    ]
+    origin: "http://localhost:5173",
 }));
-//Fix
+
 mongoose.connect(process.env.MONGO_URL);
 
 function getUserDataFromReq(req){
