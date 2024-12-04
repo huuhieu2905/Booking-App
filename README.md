@@ -1,2 +1,3 @@
 # Booking-App
-Pham Trung Hieu
+Web booking app
+
