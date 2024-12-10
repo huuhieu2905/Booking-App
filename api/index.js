@@ -36,6 +36,17 @@ function getUserDataFromReq(req){
     }); 
 }
 
+
+const fileUploader = require('./cloudinary.config.js');
+app.post('/cloudinary-upload', fileUploader.single('file'), (req, res, next) => {
+    if (!req.file) {
+        next(new Error('No file uploaded!'));
+        return;
+      }
+     
+    res.json({ secure_url: req.file.path });
+});
+
 app.get('/test', (req, res) => {
     res.json('test ok');
 });
@@ -192,4 +203,7 @@ app.get('/bookings', async (req,res) => {
    const userData = await getUserDataFromReq(req);
    res.json( await Booking.find({user:userData.id}).populate('place') );
 });
+
+
+
 app.listen(4000);
