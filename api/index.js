@@ -22,11 +22,7 @@ app.use(cookieParser());
 app.use('/uploads', express.static(__dirname + '/uploads'));
 app.use(cors({
     credentials: true,
-    origin: [
-        "http://localhost:5173",
-        "https://hieutt210354.web.app",
-        "http://hieutt210354.web.app"
-    ]
+    origin: "http://localhost:5173",
 }));
 
 mongoose.connect(process.env.MONGO_URL);
@@ -39,6 +35,17 @@ function getUserDataFromReq(req){
         });
     }); 
 }
+
+
+const fileUploader = require('./cloudinary.config.js');
+app.post('/cloudinary-upload', fileUploader.single('file'), (req, res, next) => {
+    if (!req.file) {
+        next(new Error('No file uploaded!'));
+        return;
+      }
+     
+    res.json({ secure_url: req.file.path });
+});
 
 app.get('/test', (req, res) => {
     res.json('test ok');
@@ -62,7 +69,10 @@ app.post('/register', async (req, res) => {
 app.post('/login', async (req, res) => {
     const {email, password} = req.body;
     const userDoc = await User.findOne({email});
-    console.log(email);
+    // console.log(userDoc);
+    // if (userDoc === null){
+    //     res.status(422).json('pass not ok');
+    // }
     if (userDoc){
         const passOk = bcrypt.compareSync(password, userDoc.password);
         if (passOk) {
@@ -197,4 +207,7 @@ app.get('/bookings', async (req,res) => {
    const userData = await getUserDataFromReq(req);
    res.json( await Booking.find({user:userData.id}).populate('place') );
 });
+
+
+
 app.listen(4000);

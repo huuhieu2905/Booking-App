@@ -4,29 +4,44 @@ import axios from 'axios';
 
 export default function PhotosUploader({addedPhotos, onChange}){
     const [photoLink,setPhotoLink] = useState('');
-    async function addPhotoByLink(ev){
-        ev.preventDefault();
-        const {data:filename} = await axios.post('/upload-by-link', {link: photoLink});
-        onChange(prev =>{
-            return [...prev, filename];
+
+    async function uploadPhoto(ev){
+        // const files = ev.target.files;
+        // const data = new FormData();
+        // for (let i = 0; i < files.length; i++){
+        //     data.append('photos', files[i]);
+        // } 
+        // axios.post('/upload', data, {
+        //     headers: {'Content-type':'multipart/form-data'}
+        // }).then(response => {
+        //     const {data:filenames} = response;
+        //     onChange(prev =>{
+        //         return [...prev, ...filenames];
+        //     });
+        // });
+
+        const files = ev.target.files;
+    const uploadedUrls = [];
+
+    // Upload each file to /cloudinary-upload endpoint
+    for (let i = 0; i < files.length; i++) {
+      const formData = new FormData();
+      formData.append('file', files[i]);
+
+      try {
+        const response = await axios.post('/cloudinary-upload', formData, {
+          headers: { 'Content-Type': 'multipart/form-data' },
         });
-        setPhotoLink('');
+        uploadedUrls.push(response.data.secure_url); // Store uploaded image URLs
+      } catch (error) {
+        console.error(`Failed to upload file: ${files[i].name}`, error);
+      }
     }
 
-    function uploadPhoto(ev){
-        const files = ev.target.files;
-        const data = new FormData();
-        for (let i = 0; i < files.length; i++){
-            data.append('photos', files[i]);
-        } 
-        axios.post('/upload', data, {
-            headers: {'Content-type':'multipart/form-data'}
-        }).then(response => {
-            const {data:filenames} = response;
-            onChange(prev =>{
-                return [...prev, ...filenames];
-            });
-        });
+    // Update state with new photo URLs
+    onChange((prev) => {
+      return [...prev, ...uploadedUrls];
+    });
     }
     function removePhoto(ev, filename){
         ev.preventDefault();
@@ -38,18 +53,11 @@ export default function PhotosUploader({addedPhotos, onChange}){
     }
     return(
         <>
-        <div className="flex gap-2">
-            <input type="text" 
-                    value={photoLink} 
-                    onChange={ev => setPhotoLink(ev.target.value)} 
-                    placeholder={"Add using a link ... jpg"}/>
-            <button onClick={addPhotoByLink} className="bg-gray-200 px-4 rounded-2xl">Add&nbsp;photo</button>
-        </div>
     
         <div className="mt-2 grid gap-2 grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
             {addedPhotos.length > 0 && addedPhotos.map(link => (
                 <div className="h-32 flex relative" key={link}>
-                    <img className="rounded-2xl w-full object-cover" src={'http://localhost:4000/uploads/'+link} alt=""/>
+                    <img className="rounded-2xl w-full object-cover" src={link} alt=""/>
                     <button onClick={ev => removePhoto(ev, link)} className="cursor-pointer absolute bottom-1 right-1 text-white bg-black bg-opacity-50 rounded-2xl p-1">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M15 12H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
